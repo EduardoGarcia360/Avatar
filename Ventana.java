@@ -37,7 +37,6 @@ public class Ventana extends JFrame implements ActionListener {
 	JTextArea textArea;
 	JMenuItem mntmInformacion;
 	JLabel lblImagen;
-	JTextPane txtpnError;
 	int contador=0;
 	ImageIcon avatarH = new ImageIcon(getClass().getResource("/Imagenes/avatar_hombre.png"));
 	ImageIcon avatarM = new ImageIcon(getClass().getResource("/Imagenes/avatar_mujer.png"));
@@ -97,7 +96,6 @@ public class Ventana extends JFrame implements ActionListener {
 		contentPane.add(lblImagen);
 		
 		btnGuardar = new JButton("Guardar");
-		//btnGuardar.setEnabled(false);
 		btnGuardar.addActionListener(this);
 		btnGuardar.setBounds(182, 368, 89, 23);
 		contentPane.add(btnGuardar);
@@ -126,73 +124,47 @@ public class Ventana extends JFrame implements ActionListener {
 		String [] temp = texto.split("\n");
 		int posf = temp.length;
 		if( !temp[0].equals("<avatar>") ){
-			String temp2="";
-			int f = temp.length;
-			String cadena = "";
-			
-			for(int i=0; i<temp.length; i++){
-				if(i == 0){
-					temp2 = temp[0] + " <<Error" + "\n";
-					cadena = temp[0] + " <<Error";
-				}else if(i == f){
-					temp2 = temp2 + temp[i];
-				}else{
-					temp2 = temp2 + temp[i] + "\n";
-				}
-			}
-			textArea.setText("");
-			textArea.setText(temp2);
+			MarcarError(temp,0);
 		}else if( !temp[posf-1].equals("</avatar>") ){
-			String temp2 = "";
-			int f = temp.length;
-			for(int i=0; i<temp.length; i++){
-				if(i==f-1){
-					String cadena = "";
-					try{
-						cadena = temp[i]+ " <<Error";
-						temp2 = temp2 + cadena;
-						
-						PintarError(cadena,temp2,i);
-						
-					}catch(Exception e){
-						
-					}
-				}else{
-					temp2 = temp2 + temp[i] + "\n";
-				}
-			}
-			
+			MarcarError(temp, (posf-1));
 		}else{
-			AnalizarResto();
+			AnalizarResto(temp);
 		}
 	}
 	
-	void PintarError(String error, String texto, int i){
-		
-		int TamTe = texto.length();
-		int TamCa = error.length();
-		int po = TamTe - TamCa;
-		int linea = i + 1;
-		String l = " en linea " + linea;
-		StyleContext sc = new StyleContext();
-		DefaultStyledDocument dsd = new DefaultStyledDocument(sc);
-		
-		txtpnError = new JTextPane(dsd);
-		txtpnError.setVisible(true);
-		txtpnError.setBounds(341, 32, 294, 255);
-		contentPane.add(txtpnError);
-		
-		try {
-			dsd.insertString(0, texto + l, null);
-		} catch (BadLocationException e) {}
-		
-		javax.swing.text.Style rojo = sc.addStyle("ConstantWidth", null);
-		StyleConstants.setForeground(rojo, Color.red);
-		
-		dsd.setCharacterAttributes(po, TamCa, rojo, false);
+	//PE -> POSICION ERROR
+	void MarcarError(String [] texto, int Pe){
+		int Ta = texto.length;
+		String [] tmp2 = new String[Ta];
+		String dato="", mostrar="";
+		for( int i=0; i<(Ta); i++){
+			dato = texto[i];
+			if( Pe == i ){
+				dato = dato + "<<Error";
+				tmp2[i] = dato;
+				mostrar = mostrar + tmp2[i] + "\n";
+			}else{
+				tmp2[i] = dato;
+				mostrar = mostrar + tmp2[i] + "\n";
+			}
+		}
+		textArea.setText(mostrar);
+		textArea.setEditable(true);
 	}
 	
-	void AnalizarResto(){
+	
+	void AnalizarResto(String [] texto){
+		String tmp1 = texto[1];
+		String [] atmp1 = tmp1.split(">");
+		System.out.println("texto: " + tmp1);
+		System.out.println();
+		
+		System.out.println("partido usando >");
+		for(int i=0; i<(atmp1.length); i++){
+			String mostrar = atmp1[i];
+			System.out.println();
+			System.out.println(mostrar + i);
+		}
 		
 	}
 	
