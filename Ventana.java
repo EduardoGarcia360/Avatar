@@ -166,46 +166,37 @@ public class Ventana extends JFrame implements ActionListener {
 		String [] aceptado = {"masculino","femenino"};
 		
 		String tmp1 = texto[1];
-		System.out.println(tmp1 + " paso1");
-		System.out.println();
-		
 		String [] atmp1 = tmp1.split(">");
-		
-		System.out.println("---dentro del for:---");
-		for(int i=0; i<(atmp1.length); i++){
-			String mostrar = atmp1[i];
-			System.out.println(mostrar + i);
-			System.out.println();
-		}
-		System.out.println("---fuera del for:---");
-		
 		String tmp2 = atmp1[1];
-		System.out.println(tmp2 + " -->paso2");
-		System.out.println();
-		
 		String [] atmp2 = tmp2.split("<");
-		System.out.println(atmp2[0] + " --->arreglo atmp2 pos 0");
-		System.out.println(atmp2[1] + " --->arreglo atmp2 pos 1");
-		
 		String [] atmp3 = new String [3];
-		String dato="", mostrar="";
+		String dato="";
 		for(int i=0; i<(atmp3.length); i++){
-			
 			if(i == 0){
 				dato = atmp1[i];
 				atmp3[i] = dato;
-				mostrar = mostrar + "[" + atmp3[i] + "] - ";
 			}else if(i == 1){
 				dato = atmp2[0];
 				atmp3[i] = dato;
-				mostrar = mostrar + "[" + atmp3[i] + "] - ";
 			}else if(i == 2){
 				dato = atmp2[1];
 				atmp3[i] = dato;
-				mostrar = mostrar + "[" + atmp3[i] + "] - ";
 			}
+		}//FIN FOR -> RESULTADO [..] [..] [..]
+		
+		if(!atmp3[0].equals("<sexo")){
+			MarcarError(atmp3,0);
+		}else{
+			lblImagen.setVisible(true);
+			lblImagen.setIcon(avatarH);
+			lblImagen.setText("pedro pomex");
+			Correcto();
 		}
-		System.out.println(mostrar);
+		
+	}
+	
+	void Correcto(){
+		JOptionPane.showMessageDialog(null, "si funciona");
 	}
 	
 	void ObtenerRutaDeArchivo(){
