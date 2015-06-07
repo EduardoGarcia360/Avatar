@@ -2,6 +2,10 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
@@ -100,7 +104,7 @@ public class Ventana extends JFrame implements ActionListener {
 		try{
 			String ruta, datos;
 			JFileChooser archivo = new JFileChooser();
-			FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos AVA", "ava", "Archivos LFP", "lfp");
+			FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos AVA & LFP", "ava", "lfp");
 			archivo.setFileFilter(filtro);
 			archivo.showOpenDialog(archivo);
 			ruta = archivo.getSelectedFile().getAbsolutePath();
@@ -114,18 +118,31 @@ public class Ventana extends JFrame implements ActionListener {
 		
 	}
 	
-	
-	
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource() == btnAbrir){
 			ObtenerRutaDeArchivo();
 		}
+		
 		if(e.getSource() == mntmInformacion){
 			JOptionPane.showMessageDialog(null, "Realizado por: Eduardo Antonio Garcia Franco"
 					+ "\nCarnet: 2012-12961","Acerda de..",JOptionPane.INFORMATION_MESSAGE);
 		}
+		
 		if(e.getSource() == btnGuardar){
-			
+			if(textArea.getText().equals("")){
+				JOptionPane.showMessageDialog(null, "Aun no has ingresado ninguna linea de codigo","Advertencia",JOptionPane.INFORMATION_MESSAGE);
+			}else{
+				String texto = textArea.getText();
+				ar.Guardar(texto);
+			}
+		}
+		
+		if(e.getSource() == btnGuardarc){
+			if(textArea.getText().equals("")){
+				JOptionPane.showMessageDialog(null, "Aun no has seleccionado un archivo","Advertencia",JOptionPane.INFORMATION_MESSAGE);
+			}else{
+				
+			}
 		}
 	}
 }
