@@ -186,20 +186,13 @@ public class Ventana extends JFrame implements ActionListener {
 		String dos = atmp3[2];
 		
 		if(!VerificarInicio(cero)){
-			
-		}else if(!VerificarMedio(dos)){
-			
-		}else if(VerificarFinal(uno)){
-			
-		}
-		
-		if(!atmp3[0].contains("<sexo")){
 			MarcarError(texto,1);
-		}else if(!atmp3[2].contains("/sexo")){
+		}else if(!VerificarFinal(dos)){
+			MarcarError(texto,1);
+		}else if(!VerificarMedio(uno)){
 			MarcarError(texto,1);
 		}else{
 			String enviar = atmp3[1];
-			
 			Correcto(enviar,null);
 		}
 		
