@@ -91,7 +91,7 @@ public class Ventana extends JFrame implements ActionListener {
 		//centrar texto en label ("pomez, 18", JLabel.LEFT)
 		lblImagen = new JLabel();
 		lblImagen.setOpaque(true);
-		lblImagen.setVisible(false);
+		lblImagen.setVisible(true);
 		lblImagen.setBounds(343, 32, 273, 255);
 		contentPane.add(lblImagen);
 		
@@ -162,9 +162,6 @@ public class Ventana extends JFrame implements ActionListener {
 	 */
 	
 	void AnalizarResto(String [] texto){
-		
-		String [] aceptado = {"masculino","femenino"};
-		
 		String tmp1 = texto[1];
 		String [] atmp1 = tmp1.split(">");
 		String tmp2 = atmp1[1];
@@ -184,19 +181,105 @@ public class Ventana extends JFrame implements ActionListener {
 			}
 		}//FIN FOR -> RESULTADO [..] [..] [..]
 		
-		if(!atmp3[0].equals("<sexo")){
-			MarcarError(atmp3,0);
+		String cero = atmp3[0];
+		String uno = atmp3[1];
+		String dos = atmp3[2];
+		
+		if(!VerificarInicio(cero)){
+			
+		}else if(!VerificarMedio(dos)){
+			
+		}else if(VerificarFinal(uno)){
+			
+		}
+		
+		if(!atmp3[0].contains("<sexo")){
+			MarcarError(texto,1);
+		}else if(!atmp3[2].contains("/sexo")){
+			MarcarError(texto,1);
 		}else{
-			lblImagen.setVisible(true);
-			lblImagen.setIcon(avatarH);
-			lblImagen.setText("pedro pomex");
-			Correcto();
+			String enviar = atmp3[1];
+			
+			Correcto(enviar,null);
 		}
 		
 	}
 	
-	void Correcto(){
-		JOptionPane.showMessageDialog(null, "si funciona");
+	boolean VerificarInicio(String Dato){
+		String [] Inicio = {"<usuario","<complexion","<personalidad","<sexo"};
+		boolean correcto = false;
+		for(int i=0; i<Inicio.length; i++){
+			if(Dato.equals(Inicio[i])){
+				correcto = true;
+			}
+		}
+		return correcto;
+	}
+	
+	boolean VerificarMedio(String Dato){
+		String [] Medio = {"delgado","normal","gordo","enojado","alegre","neutro","masculino","femenino"};
+		boolean correcto = false;
+		for(int i=0; i<Medio.length; i++){
+			if(Dato.equals(Medio[i]) || esnumero(Dato)){
+				correcto = true;
+			}
+		}
+		return correcto;
+	}
+	
+	boolean VerificarFinal(String Dato){
+		String [] Fin = {"/usuario", "/complexion", "/personalidad","/sexo"};
+		boolean correcto = false;
+		for(int i=0; i<Fin.length; i++){
+			if(Dato.equals(Fin[i])){
+				correcto = true;
+			}
+		}
+		return correcto;
+	}
+	
+	public static boolean esnumero(String dato){
+        try{
+            Integer.parseInt(dato);
+        }catch(NumberFormatException nfe){
+            return false;
+        }
+        return true;
+    }
+	
+	private boolean Buscar(CharSequence letra, String palab){
+        boolean encontrar;
+        encontrar = palab.contains(letra);
+        return encontrar;
+    }
+	
+	void Correcto(String DatoMedio, String nombre){
+		
+		lblImagen.setText(nombre);
+		if(DatoMedio.equals("masculino")){
+			lblImagen.setIcon(avatarH);
+			lblImagen.setForeground(Color.BLUE);
+			
+		}
+		
+		if(DatoMedio.equals("femenino")){
+			lblImagen.setIcon(avatarM);
+			lblImagen.setForeground(Color.PINK);
+			
+		}
+		
+		if(DatoMedio.equals("enojado")){
+			lblImagen.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+		}
+		
+		if(DatoMedio.equals("alegre")){
+			lblImagen.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 4));
+		}
+		
+		if(DatoMedio.equals("neutro")){
+			lblImagen.setBorder(BorderFactory.createLineBorder(Color.GRAY, 4));
+		}
+		
 	}
 	
 	void ObtenerRutaDeArchivo(){
@@ -256,6 +339,10 @@ public class Ventana extends JFrame implements ActionListener {
 			if(textArea.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "Nada que analizar","Notificacion",JOptionPane.INFORMATION_MESSAGE);
 			}else{
+				lblImagen.setText("");
+				lblImagen.setIcon(null);
+				lblImagen.setForeground(null);
+				lblImagen.setBorder(null);
 				AnalizarS0();
 			}
 		}
