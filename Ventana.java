@@ -63,7 +63,7 @@ public class Ventana extends JFrame implements ActionListener {
 	 */
 	public Ventana() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 995, 440);
+		setBounds(100, 100, 875, 440);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -78,11 +78,11 @@ public class Ventana extends JFrame implements ActionListener {
 		textArea.append("linea 1\n");
 		textArea.append("linea 2");
 		//textArea.setForeground(Color.BLUE);
-		textArea.setBounds(10, 32, 294, 255);
+		textArea.setBounds(10, 32, 501, 255);
 		contentPane.add(textArea);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 709, 21);
+		menuBar.setBounds(0, 0, 969, 21);
 		contentPane.add(menuBar);
 		
 		JMenu mnAcercaDe = new JMenu("Acerca de..");
@@ -96,7 +96,7 @@ public class Ventana extends JFrame implements ActionListener {
 		lblImagen = new JLabel();
 		lblImagen.setOpaque(true);
 		lblImagen.setVisible(true);
-		lblImagen.setBounds(343, 32, 273, 255);
+		lblImagen.setBounds(580, 32, 273, 255);
 		contentPane.add(lblImagen);
 		
 		btnGuardar = new JButton("Guardar");
@@ -120,32 +120,37 @@ public class Ventana extends JFrame implements ActionListener {
 		btnLimpiar.setBounds(467, 368, 89, 23);
 		contentPane.add(btnLimpiar);
 		
-		JTextPane txtpnProvicional = new JTextPane();
-		txtpnProvicional.setText("\033[33mlinea 2");
-		txtpnProvicional.setBounds(737, 75, 205, 261);
-		contentPane.add(txtpnProvicional);
-		
 		
 	}
 	
 	void AnalizarS0(){
 		String Codigo = textArea.getText();
-		String [] aCodigo = Codigo.split("\n");
-		String tmp="";
-		for(int i=0; i<aCodigo.length; i++){
-			tmp = tmp + aCodigo[i];
-		}
+			boolean agregar=true;
+			StringTokenizer TokensCodigo = new StringTokenizer(Codigo,"\n");
+			String tmp2="";
+			while( TokensCodigo.hasMoreTokens() ){
+				String linea = TokensCodigo.nextToken();
+				tmp2 = tmp2 + linea;
+			}
+			StringTokenizer Tokens1 = new StringTokenizer(tmp2,">");
+			String tmp3="";
+			while( Tokens1.hasMoreTokens() ){
+				String linea = Tokens1.nextToken();
+				if( agregar == true){
+					tmp3 = tmp3 + linea + ">*";
+					agregar = false;
+				}else{
+					tmp3 = tmp3 + linea + ">";
+					agregar = true;
+				}
+			}
+			
+			System.out.println("abajo: "+tmp3+"final");
 		
-		StringTokenizer Tokens = new StringTokenizer(tmp,">");
-		String tmp1="";
-		while( Tokens.hasMoreTokens() ){
-			String line = Tokens.nextToken();
-			tmp1 = tmp1 + line+"*";
-		}//UNE LAS LINEAS DE CODIGO EN UNA SOLA.
 		
-		char [] CodigoLinea = tmp1.toCharArray();
 		
-		System.out.println(tmp1);
+		
+		
 		String texto = textArea.getText();
 		String [] temp = texto.split("\n");
 		int posf = temp.length;
