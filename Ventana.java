@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.StringTokenizer;
 
 import javax.jws.soap.SOAPBinding.Style;
 import javax.swing.BorderFactory;
@@ -62,7 +63,7 @@ public class Ventana extends JFrame implements ActionListener {
 	 */
 	public Ventana() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 662, 440);
+		setBounds(100, 100, 995, 440);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -74,6 +75,10 @@ public class Ventana extends JFrame implements ActionListener {
 		contentPane.add(btnAbrir);
 		
 		textArea = new JTextArea();
+		textArea.append("\033[32mlinea 1\n");
+		textArea.append("\033[33mlinea 2");
+		System.out.println("\033[31mERROR  \033[0m");
+		//textArea.setForeground(Color.BLUE);
 		textArea.setBounds(10, 32, 294, 255);
 		contentPane.add(textArea);
 		
@@ -116,10 +121,24 @@ public class Ventana extends JFrame implements ActionListener {
 		btnLimpiar.setBounds(467, 368, 89, 23);
 		contentPane.add(btnLimpiar);
 		
+		JTextPane txtpnProvicional = new JTextPane();
+		txtpnProvicional.setText("provicional");
+		txtpnProvicional.setBounds(737, 75, 205, 261);
+		contentPane.add(txtpnProvicional);
+		
 		
 	}
 	
 	void AnalizarS0(){
+		String Codigo = textArea.getText();
+		
+		StringTokenizer Tokens = new StringTokenizer(Codigo,"\n");
+		String tmp1="";
+		while( Tokens.hasMoreTokens() ){
+			String line = Tokens.nextToken();
+			tmp1 = tmp1 + line;
+		}//UNE LAS LINEAS DE CODIGO EN UNA SOLA.
+		System.out.println(tmp1);
 		String texto = textArea.getText();
 		String [] temp = texto.split("\n");
 		int posf = temp.length;
