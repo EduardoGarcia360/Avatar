@@ -75,9 +75,8 @@ public class Ventana extends JFrame implements ActionListener {
 		contentPane.add(btnAbrir);
 		
 		textArea = new JTextArea();
-		textArea.append("\033[32mlinea 1\n");
-		textArea.append("\033[33mlinea 2");
-		System.out.println("\033[31mERROR  \033[0m");
+		textArea.append("linea 1\n");
+		textArea.append("linea 2");
 		//textArea.setForeground(Color.BLUE);
 		textArea.setBounds(10, 32, 294, 255);
 		contentPane.add(textArea);
@@ -122,7 +121,7 @@ public class Ventana extends JFrame implements ActionListener {
 		contentPane.add(btnLimpiar);
 		
 		JTextPane txtpnProvicional = new JTextPane();
-		txtpnProvicional.setText("provicional");
+		txtpnProvicional.setText("\033[33mlinea 2");
 		txtpnProvicional.setBounds(737, 75, 205, 261);
 		contentPane.add(txtpnProvicional);
 		
@@ -131,13 +130,21 @@ public class Ventana extends JFrame implements ActionListener {
 	
 	void AnalizarS0(){
 		String Codigo = textArea.getText();
+		String [] aCodigo = Codigo.split("\n");
+		String tmp="";
+		for(int i=0; i<aCodigo.length; i++){
+			tmp = tmp + aCodigo[i];
+		}
 		
-		StringTokenizer Tokens = new StringTokenizer(Codigo,"\n");
+		StringTokenizer Tokens = new StringTokenizer(tmp,">");
 		String tmp1="";
 		while( Tokens.hasMoreTokens() ){
 			String line = Tokens.nextToken();
-			tmp1 = tmp1 + line;
+			tmp1 = tmp1 + line+"*";
 		}//UNE LAS LINEAS DE CODIGO EN UNA SOLA.
+		
+		char [] CodigoLinea = tmp1.toCharArray();
+		
 		System.out.println(tmp1);
 		String texto = textArea.getText();
 		String [] temp = texto.split("\n");
