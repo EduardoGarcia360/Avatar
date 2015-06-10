@@ -137,30 +137,42 @@ public class Ventana extends JFrame implements ActionListener {
 			while( Tokens1.hasMoreTokens() ){
 				String linea = Tokens1.nextToken();
 				if( agregar == true){
-					tmp3 = tmp3 + linea + ">*";
+					tmp3 = tmp3 + linea + ">%";
 					agregar = false;
 				}else{
 					tmp3 = tmp3 + linea + ">";
 					agregar = true;
 				}
 			}
+			System.out.println(tmp3); //UNE LAS LINEAS COMO <avatar>*<edad>18</edad>*</avatar> 
 			
-			System.out.println("abajo: "+tmp3+"final");
+			StringTokenizer TokenAnalizar = new StringTokenizer(tmp3,"%");
+			while( TokenAnalizar.hasMoreTokens() ){
+				String TokenActual = TokenAnalizar.nextToken();
+				char [] Arreglo_TokenActual = TokenActual.toCharArray();
+				boolean signo_abre=false, signo_cierra=false;
+				String DatosEtiqueta="";
+				for(int i=0; i<Arreglo_TokenActual.length; i++){
+					if(Arreglo_TokenActual[i] == 60){
+						JOptionPane.showMessageDialog(null, "signo abrir");
+						signo_abre=true;
+					}else if(Arreglo_TokenActual[i] == 62){
+						JOptionPane.showMessageDialog(null, "signo cerrar");
+						signo_cierra=true;
+					}else{
+						String tmp = Character.toString(Arreglo_TokenActual[i]);
+						DatosEtiqueta = DatosEtiqueta + tmp;
+					}
+				}//FIN FOR
+				 if(signo_abre == true && signo_cierra == true){
+						if(VerificarInicio(DatosEtiqueta)){
+							JOptionPane.showMessageDialog(null, "primer etiqueta correcta");
+						}else{
+							JOptionPane.showMessageDialog(null, "etiqueta incorrecta");
+						}
+					}
+			}
 		
-		
-		
-		
-		
-		String texto = textArea.getText();
-		String [] temp = texto.split("\n");
-		int posf = temp.length;
-		if( !temp[0].equals("<avatar>") ){
-			MarcarError(temp,0);
-		}else if( !temp[posf-1].equals("</avatar>") ){
-			MarcarError(temp, (posf-1));
-		}else{
-			AnalizarResto(temp);
-		}
 	}
 	
 	//PE -> POSICION ERROR
@@ -230,7 +242,7 @@ public class Ventana extends JFrame implements ActionListener {
 	}
 	
 	boolean VerificarInicio(String Dato){
-		String [] Inicio = {"<usuario","<complexion","<personalidad","<sexo"};
+		String [] Inicio = {"avatar","usuario","complexion","personalidad","sexo"};
 		boolean correcto = false;
 		for(int i=0; i<Inicio.length; i++){
 			if(Dato.equals(Inicio[i])){
