@@ -123,136 +123,132 @@ public class Ventana extends JFrame implements ActionListener {
 		
 	}
 	
-	void AnalizarS0(){
+	void Unir(){
 		String Codigo = textArea.getText();
-			boolean agregar=true;
+
 			StringTokenizer TokensCodigo = new StringTokenizer(Codigo,"\n");
 			String tmp2="";
 			while( TokensCodigo.hasMoreTokens() ){
 				String linea = TokensCodigo.nextToken();
 				tmp2 = tmp2 + linea;
-			}
+			}//UNE LO INGRESADO EN UNA SOLA LINEA
+			
 			StringTokenizer Tokens1 = new StringTokenizer(tmp2,">");
 			String tmp3="";
 			while( Tokens1.hasMoreTokens() ){
 				String linea = Tokens1.nextToken();
-				if( agregar == true){
 					tmp3 = tmp3 + linea + ">%";
-					agregar = false;
+			}
+			
+			char [] aTmp = tmp3.toCharArray();
+			String union="", a="", b="";
+			for(int i=0; i<aTmp.length; i++){
+				a = Character.toString(aTmp[i]);
+				if(a.equals("<")){
+					try{
+						b = Character.toString(aTmp[i-1]);
+						if(!b.equals("%")){
+							union = union + "%" + a;
+						}else{
+							union = union + a;
+						}
+					}catch(Exception e){
+						union = union + a;
+					}
 				}else{
-					tmp3 = tmp3 + linea + ">";
-					agregar = true;
+					union = union + a;
+				}
+			}//DIVIDE CADA TOKEN CON "%"
+			Analizar(union);
+	}
+	
+	void Analizar(String Codigo){
+		String [] TokenAnalizar = Codigo.split("%");
+		int Pf = TokenAnalizar.length;
+		if( !TokenAnalizar[0].equals("<avatar>") && !TokenAnalizar[Pf-1].equals("</avatar>")){
+			JOptionPane.showMessageDialog(null, "Faltan las etiquetas principales.","Error",JOptionPane.ERROR_MESSAGE);
+		}else{
+			
+			
+			String nombreUsuario = "";
+			for(int i=1; i<(Pf-2); i++){
+				String TokenActual = TokenAnalizar[i];
+				if( EtiquetaAbre(TokenActual)==false && EtiquetaCierre(TokenActual)==false && PalabraReservada(TokenActual)==false ){
+					JOptionPane.showMessageDialog(null, "error en: "+TokenActual);
+					break;
+					
+				}else{
+					
+					if(TokenActual.equals("<usuario>")){
+						
+						char [] nombre = TokenAnalizar[i+1].toCharArray();
+						int f = nombre.length;
+						if(nombre[0] == 34 && nombre[f-1] == 34){
+							String nom="";
+							for(int n=1; n<nombre.length-2; n++){
+								nom = nom + Character.toString(nombre[n]);
+							}
+							nombreUsuario = nombreUsuario + " Nombre: " + nom;
+							
+						}else{
+							JOptionPane.showMessageDialog(null, "Los nombres de usuario van entre comillas.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+						
+						if(EtiquetaCierre(TokenAnalizar[i+2]) == false){
+							String no = TokenAnalizar[i+2];
+							lblImagen.setText("");
+							JOptionPane.showMessageDialog(null, no + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}else{
+							lblImagen.setText(nombreUsuario);
+							i = i +2;
+						}
+						
+					}else if(TokenActual.equals("<edad>")){
+						
+						if( esnumero(TokenAnalizar[i+1]) == false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No es una edad.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}else{
+							nombreUsuario = nombreUsuario + " Edad: " + TokenAnalizar[i+1];
+						}
+						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}else{
+							lblImagen.setText(nombreUsuario);
+							i = i + 2;
+						}
+						
+					}else if(TokenActual.equals("<complexion>")){
+						
+					}else if(TokenActual.equals("<personalidad>")){
+						
+					}else if(TokenActual.equals("<sexo>")){
+						
+					}
+					
+					
 				}
 			}
-			System.out.println(tmp3); //UNE LAS LINEAS COMO <avatar>*<edad>18</edad>*</avatar> 
 			
-			StringTokenizer TokenAnalizar = new StringTokenizer(tmp3,"%");
-			while( TokenAnalizar.hasMoreTokens() ){
-				String TokenActual = TokenAnalizar.nextToken();
-				char [] Arreglo_TokenActual = TokenActual.toCharArray();
-				boolean signo_abre=false, signo_cierra=false;
-				String DatosEtiqueta="";
-				for(int i=0; i<Arreglo_TokenActual.length; i++){
-					if(Arreglo_TokenActual[i] == 60){
-						JOptionPane.showMessageDialog(null, "signo abrir");
-						signo_abre=true;
-					}else if(Arreglo_TokenActual[i] == 62){
-						JOptionPane.showMessageDialog(null, "signo cerrar");
-						signo_cierra=true;
-					}else{
-						String tmp = Character.toString(Arreglo_TokenActual[i]);
-						DatosEtiqueta = DatosEtiqueta + tmp;
-					}
-				}//FIN FOR
-				 if(signo_abre == true && signo_cierra == true){
-						if(VerificarInicio(DatosEtiqueta)){
-							JOptionPane.showMessageDialog(null, "primer etiqueta correcta");
-						}else{
-							JOptionPane.showMessageDialog(null, "etiqueta incorrecta");
-						}
-					}
-			}
-		
-	}
-	
-	//PE -> POSICION ERROR
-	void MarcarError(String [] texto, int Pe){
-		int Ta = texto.length;
-		String [] tmp2 = new String[Ta];
-		String dato="", mostrar="";
-		for( int i=0; i<(Ta); i++){
-			dato = texto[i];
-			if( Pe == i ){
-				dato = dato + "<<Error";
-				tmp2[i] = dato;
-				mostrar = mostrar + tmp2[i] + "\n";
-			}else{
-				tmp2[i] = dato;
-				mostrar = mostrar + tmp2[i] + "\n";
-			}
 		}
-		textArea.setText(mostrar);
-		textArea.setEditable(true);
-	}
-	/**
-	 * 
-	 *------da como resultado----------------
-	 *texto: 	<usuario>"pedro pomez"</usuario>
-	 *partido usando >
-	 *<usuario 0
-	 *"pedro pomez"</usuario 1
-	 * 
-	 */
 	
-	void AnalizarResto(String [] texto){
-		String tmp1 = texto[1];
-		String [] atmp1 = tmp1.split(">");
-		String tmp2 = atmp1[1];
-		String [] atmp2 = tmp2.split("<");
-		String [] atmp3 = new String [3];
-		String dato="";
-		for(int i=0; i<(atmp3.length); i++){
-			if(i == 0){
-				dato = atmp1[i];
-				atmp3[i] = dato;
-			}else if(i == 1){
-				dato = atmp2[0];
-				atmp3[i] = dato;
-			}else if(i == 2){
-				dato = atmp2[1];
-				atmp3[i] = dato;
-			}
-		}//FIN FOR -> RESULTADO [..] [..] [..]
-		
-		String cero = atmp3[0];
-		String uno = atmp3[1];
-		String dos = atmp3[2];
-		
-		if(!VerificarInicio(cero)){
-			MarcarError(texto,1);
-		}else if(!VerificarFinal(dos)){
-			MarcarError(texto,1);
-		}else if(!VerificarMedio(uno)){
-			MarcarError(texto,1);
-		}else{
-			String enviar = atmp3[1];
-			Correcto(enviar,null);
-		}
-		
 	}
 	
-	boolean VerificarInicio(String Dato){
-		String [] Inicio = {"avatar","usuario","complexion","personalidad","sexo"};
+	boolean EtiquetaAbre(String Dato){
+		String [] PalabrasReservadas = {"<avatar>","<usuario>","<complexion>","<personalidad>","<sexo>","<edad>"};
 		boolean correcto = false;
-		for(int i=0; i<Inicio.length; i++){
-			if(Dato.equals(Inicio[i])){
+		for(int i=0; i<PalabrasReservadas.length; i++){
+			if(Dato.equals( PalabrasReservadas[i] ) ){
 				correcto = true;
 			}
 		}
 		return correcto;
 	}
 	
-	boolean VerificarMedio(String Dato){
+	boolean PalabraReservada(String Dato){
 		String [] Medio = {"delgado","normal","gordo","enojado","alegre","neutro","masculino","femenino"};
 		boolean correcto = false;
 		for(int i=0; i<Medio.length; i++){
@@ -263,8 +259,8 @@ public class Ventana extends JFrame implements ActionListener {
 		return correcto;
 	}
 	
-	boolean VerificarFinal(String Dato){
-		String [] Fin = {"/usuario", "/complexion", "/personalidad","/sexo"};
+	boolean EtiquetaCierre(String Dato){
+		String [] Fin = {"</avatar>","</usuario>","</complexion>","</personalidad>","</sexo>","</edad>"};
 		boolean correcto = false;
 		for(int i=0; i<Fin.length; i++){
 			if(Dato.equals(Fin[i])){
@@ -379,7 +375,7 @@ public class Ventana extends JFrame implements ActionListener {
 				lblImagen.setIcon(null);
 				lblImagen.setForeground(null);
 				lblImagen.setBorder(null);
-				AnalizarS0();
+				Unir();
 			}
 		}
 	}
