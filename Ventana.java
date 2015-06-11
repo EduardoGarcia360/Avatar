@@ -173,7 +173,7 @@ public class Ventana extends JFrame implements ActionListener {
 			String nombreUsuario = "";
 			for(int i=1; i<(Pf-2); i++){
 				String TokenActual = TokenAnalizar[i];
-				if( EtiquetaAbre(TokenActual)==false && EtiquetaCierre(TokenActual)==false && PalabraReservada(TokenActual)==false ){
+				if( EtiquetaAbre(TokenActual)==false && EtiquetaCierre(TokenActual)==false ){
 					JOptionPane.showMessageDialog(null, "error en: "+TokenActual);
 					break;
 					
@@ -223,10 +223,59 @@ public class Ventana extends JFrame implements ActionListener {
 						
 					}else if(TokenActual.equals("<complexion>")){
 						
+						if( PalabraReservada(TokenAnalizar[i+1], "complexion")== false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}else{
+							//ALGO
+						}
+						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}else{
+							//ALGO
+							i = i + 2;
+						}
+						
 					}else if(TokenActual.equals("<personalidad>")){
+						
+						if( PalabraReservada(TokenAnalizar[i+1], "personalidad")== false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}else{
+							if(TokenAnalizar[i+1].equals("enojado")){
+								lblImagen.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
+							}else if(TokenAnalizar[i+1].equals("alegre")){
+								lblImagen.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
+							}else if(TokenAnalizar[i+1].equals("neutro")){
+								lblImagen.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
+							}
+							i = i + 2;
+						}
 						
 					}else if(TokenActual.equals("<sexo>")){
 						
+						if( PalabraReservada(TokenAnalizar[i+1], "sexo")== false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
+							break;
+						}else{
+							if(TokenAnalizar[i+1].equals("maculino")){
+								lblImagen.setForeground(Color.BLUE);
+								lblImagen.setIcon(avatarH);
+							}else if(TokenAnalizar[i+1].equals("femenino")){
+								lblImagen.setForeground(Color.PINK);
+								lblImagen.setIcon(avatarM);
+							}
+							i = i + 2;
+						}
 					}
 					
 					
@@ -248,12 +297,28 @@ public class Ventana extends JFrame implements ActionListener {
 		return correcto;
 	}
 	
-	boolean PalabraReservada(String Dato){
-		String [] Medio = {"delgado","normal","gordo","enojado","alegre","neutro","masculino","femenino"};
+	boolean PalabraReservada(String Dato, String Etiqueta){
 		boolean correcto = false;
-		for(int i=0; i<Medio.length; i++){
-			if(Dato.equals(Medio[i]) || esnumero(Dato)){
-				correcto = true;
+		if(Etiqueta.equals("complexion")){
+			String [] Complexion = {"delgado","normal","gordo"};
+			for(int i=0; i<Complexion.length; i++){
+				if(Dato.equals(Complexion[i])){
+					correcto = true;
+				}
+			}
+		}else if(Etiqueta.equals("personalidad")){
+			String [] Personalidad = {"enojado","alegre","neutro"};
+			for(int i=0; i<Personalidad.length; i++){
+				if(Dato.equals(Personalidad[i])){
+					correcto = true;
+				}
+			}
+		}else if(Etiqueta.equals("sexo")){
+			String [] Sexo = {"masculino","femenino"};
+			for(int i=0; i<Sexo.length; i++){
+				if(Dato.equals(Sexo[i])){
+					correcto = true;
+				}
 			}
 		}
 		return correcto;
