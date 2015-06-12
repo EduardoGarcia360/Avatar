@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -64,8 +66,11 @@ public class Ventana extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Ventana() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 440);
+		this.setLocationRelativeTo(null);
+		this.setTitle("Practica 1");
+		cerrar();
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -124,8 +129,26 @@ public class Ventana extends JFrame implements ActionListener {
 		btnLimpiar.addActionListener(this);
 		btnLimpiar.setBounds(467, 368, 89, 23);
 		contentPane.add(btnLimpiar);
-		
-		
+	}
+	
+	public void cerrar(){
+		try{
+			this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			addWindowListener(new WindowAdapter(){
+				public void windowClosing(WindowEvent e){
+					Salida();
+				}
+			});
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void Salida(){
+		int respuesta = JOptionPane.showConfirmDialog(this, "¿Quiere salir?", "Mensaje",JOptionPane.YES_NO_OPTION);
+		if(respuesta == JOptionPane.YES_OPTION){
+			System.exit(0);
+		}
 	}
 	
 	void Unir(){
