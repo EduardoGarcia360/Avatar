@@ -39,6 +39,8 @@ public class Ventana extends JFrame implements ActionListener {
 	JMenuItem mntmInformacion;
 	JLabel lblImagen;
 	int contador=0;
+	public String RutadeArchivo="";
+	boolean ArchivoAbierto = false;
 	ImageIcon avatarH = new ImageIcon(getClass().getResource("/Imagenes/avatar_hombre.png"));
 	ImageIcon avatarM = new ImageIcon(getClass().getResource("/Imagenes/avatar_mujer.png"));
 
@@ -63,7 +65,7 @@ public class Ventana extends JFrame implements ActionListener {
 	 */
 	public Ventana() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 875, 440);
+		setBounds(100, 100, 900, 440);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,9 +77,6 @@ public class Ventana extends JFrame implements ActionListener {
 		contentPane.add(btnAbrir);
 		
 		textArea = new JTextArea();
-		textArea.append("linea 1\n");
-		textArea.append("linea 2");
-		//textArea.setForeground(Color.BLUE);
 		textArea.setBounds(10, 32, 501, 255);
 		contentPane.add(textArea);
 		
@@ -90,6 +89,12 @@ public class Ventana extends JFrame implements ActionListener {
 		
 		mntmInformacion = new JMenuItem("Informacion");
 		mntmInformacion.addActionListener(this);
+		
+		JMenuItem mntmManualt = new JMenuItem("ManualT");
+		mnAcercaDe.add(mntmManualt);
+		
+		JMenuItem mntmManualu = new JMenuItem("ManualU");
+		mnAcercaDe.add(mntmManualu);
 		mnAcercaDe.add(mntmInformacion);
 		
 		//centrar texto en label ("pomez, 18", JLabel.LEFT)
@@ -173,7 +178,7 @@ public class Ventana extends JFrame implements ActionListener {
 			String nombreUsuario = "";
 			for(int i=1; i<(Pf-2); i++){
 				String TokenActual = TokenAnalizar[i];
-				if( EtiquetaAbre(TokenActual)==false && EtiquetaCierre(TokenActual)==false ){
+				if( EtiquetaAbre(TokenActual)==false && EtiquetaCierre(TokenActual)==false && PalabraReservada(TokenActual,"")==false ){
 					JOptionPane.showMessageDialog(null, "error en: "+TokenActual);
 					break;
 					
@@ -224,7 +229,7 @@ public class Ventana extends JFrame implements ActionListener {
 					}else if(TokenActual.equals("<complexion>")){
 						
 						if( PalabraReservada(TokenAnalizar[i+1], "complexion")== false){
-							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas.","Error",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas de esta etiqueta.","Error",JOptionPane.ERROR_MESSAGE);
 							break;
 						}else{
 							//ALGO
@@ -240,40 +245,28 @@ public class Ventana extends JFrame implements ActionListener {
 					}else if(TokenActual.equals("<personalidad>")){
 						
 						if( PalabraReservada(TokenAnalizar[i+1], "personalidad")== false){
-							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas.","Error",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas de esta etiqueta.","Error",JOptionPane.ERROR_MESSAGE);
 							break;
 						}
 						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
 							break;
 						}else{
-							if(TokenAnalizar[i+1].equals("enojado")){
-								lblImagen.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
-							}else if(TokenAnalizar[i+1].equals("alegre")){
-								lblImagen.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
-							}else if(TokenAnalizar[i+1].equals("neutro")){
-								lblImagen.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
-							}
+							Correcto(TokenAnalizar[i+1],"personalidad");
 							i = i + 2;
 						}
 						
 					}else if(TokenActual.equals("<sexo>")){
 						
 						if( PalabraReservada(TokenAnalizar[i+1], "sexo")== false){
-							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas.","Error",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas de esta etiqueta.","Error",JOptionPane.ERROR_MESSAGE);
 							break;
 						}
 						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
 							break;
 						}else{
-							if(TokenAnalizar[i+1].equals("maculino")){
-								lblImagen.setForeground(Color.BLUE);
-								lblImagen.setIcon(avatarH);
-							}else if(TokenAnalizar[i+1].equals("femenino")){
-								lblImagen.setForeground(Color.PINK);
-								lblImagen.setIcon(avatarM);
-							}
+							Correcto(TokenAnalizar[i+1],"sexo");
 							i = i + 2;
 						}
 					}
@@ -299,6 +292,9 @@ public class Ventana extends JFrame implements ActionListener {
 	
 	boolean PalabraReservada(String Dato, String Etiqueta){
 		boolean correcto = false;
+		if(Etiqueta.equals("")){
+			correcto = false;
+		}
 		if(Etiqueta.equals("complexion")){
 			String [] Complexion = {"delgado","normal","gordo"};
 			for(int i=0; i<Complexion.length; i++){
@@ -344,53 +340,49 @@ public class Ventana extends JFrame implements ActionListener {
         return true;
     }
 	
-	private boolean Buscar(CharSequence letra, String palab){
-        boolean encontrar;
-        encontrar = palab.contains(letra);
-        return encontrar;
-    }
-	
-	void Correcto(String DatoMedio, String nombre){
-		
-		lblImagen.setText(nombre);
-		if(DatoMedio.equals("masculino")){
-			lblImagen.setIcon(avatarH);
-			lblImagen.setForeground(Color.BLUE);
+	void Correcto(String Dato, String Etiqueta){
+		if(Etiqueta.equals("complexion")){
 			
-		}
-		
-		if(DatoMedio.equals("femenino")){
-			lblImagen.setIcon(avatarM);
-			lblImagen.setForeground(Color.PINK);
+		}else if(Etiqueta.equals("personalidad")){
+			if(Dato.equals("enojado")){
+				lblImagen.setBackground(Color.RED);
+			}else
 			
+			if(Dato.equals("alegre")){
+				lblImagen.setBackground(Color.YELLOW);
+			}else
+			
+			if(Dato.equals("neutro")){
+				lblImagen.setBackground(Color.GRAY);
+			}
+		}else if(Etiqueta.equals("sexo")){
+			if(Dato.equals("masculino")){
+				lblImagen.setIcon(avatarH);
+				lblImagen.setForeground(Color.BLUE);
+				
+			}else
+			
+			if(Dato.equals("femenino")){
+				lblImagen.setIcon(avatarM);
+				lblImagen.setForeground(Color.PINK);
+				
+			}
 		}
-		
-		if(DatoMedio.equals("enojado")){
-			lblImagen.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
-		}
-		
-		if(DatoMedio.equals("alegre")){
-			lblImagen.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 4));
-		}
-		
-		if(DatoMedio.equals("neutro")){
-			lblImagen.setBorder(BorderFactory.createLineBorder(Color.GRAY, 4));
-		}
-		
 	}
 	
 	void ObtenerRutaDeArchivo(){
 		try{
 			String ruta, datos;
-			JFileChooser archivo = new JFileChooser();
+			JFileChooser archivo = new JFileChooser("C:\\Users\\Edu\\Desktop\\");
 			FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos AVA & LFP", "ava", "lfp");
 			archivo.setFileFilter(filtro);
 			archivo.showOpenDialog(archivo);
 			ruta = archivo.getSelectedFile().getAbsolutePath();
-			datos = ar.ArbirARCHIVO(ruta);
+			RutadeArchivo = ruta;
+			datos = ar.AbrirARCHIVO(ruta);
 			textArea.setText(datos);
-			textArea.setEditable(false);
 			btnGuardarc.setEnabled(true);
+			ArchivoAbierto = true;
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null,"No seleccionaste ningun archivo","Advertencia", JOptionPane.WARNING_MESSAGE);
 		}
@@ -404,7 +396,9 @@ public class Ventana extends JFrame implements ActionListener {
 		
 		if(e.getSource() == mntmInformacion){
 			JOptionPane.showMessageDialog(null, "Realizado por: Eduardo Antonio Garcia Franco"
-					+ "\nCarnet: 2012-12961","Acerda de..",JOptionPane.INFORMATION_MESSAGE);
+					+ "\nCarnet: 2012-12961"
+					+ "\nCurso: Lenguajes Formales y de Programacion"
+					+ "\nVacaciones de Junio 2015","Acerda de..",JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		if(e.getSource() == btnGuardar){
@@ -412,7 +406,8 @@ public class Ventana extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Aun no has ingresado ninguna linea de codigo","Advertencia",JOptionPane.INFORMATION_MESSAGE);
 			}else{
 				String texto = textArea.getText();
-				ar.Guardar(texto);
+				ar.Guardar(texto, RutadeArchivo, ArchivoAbierto);
+				ArchivoAbierto = false;
 			}
 		}
 		
@@ -420,7 +415,8 @@ public class Ventana extends JFrame implements ActionListener {
 			if(textArea.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "Aun no has seleccionado un archivo","Advertencia",JOptionPane.INFORMATION_MESSAGE);
 			}else{
-				
+				String datos = textArea.getText();
+				ar.GuardarComo(datos);
 			}
 		}
 		
