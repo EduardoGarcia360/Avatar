@@ -1,8 +1,10 @@
 import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -103,6 +105,62 @@ public class Archivo {
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,"Error al guardar", "Notificacion", JOptionPane.ERROR_MESSAGE);
         }
+	}
+	
+	public void GenerarHTMLLexemas(){
+		String Titulo = "<html><head><link rel=\"stylesheet\" type= \"text/css\" href=\"Estilo.css\" /><title>Tabla de Lexemas</title></head><body><h1><font face=\"Calibri\">Tabla de Lexemas por token</font></h1>";
+		String miTabla = "<table id=\"miTabla\"><tr><td>No.</td><td>Lexema</td><td>Token</td><td>Posicion</td></tr>";
+		String cierrePagina = "</table></body></html>";
+		String contenidoFila = "<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>";
+		//FORMATO PARA FILAS:<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>
+		String PaginaCompleta = Titulo + miTabla + contenidoFila + cierrePagina;
+		
+		try{
+			File correcto = new File("tabla de lexemas.html");
+			FileWriter escritor = new FileWriter(correcto);
+			BufferedWriter BW = new BufferedWriter(escritor);
+			PrintWriter salida = new PrintWriter(BW);
+			
+			salida.write(PaginaCompleta);
+			
+			salida.close();
+			BW.close();
+			
+			Desktop des = Desktop.getDesktop();
+			if(correcto.exists()){
+				des.open(correcto);
+			}
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null,"Error al guardar", "Notificacion", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void GenerarHTMLErrores(){
+		String Titulo = "<html><head><link rel=\"stylesheet\" type= \"text/css\" href=\"Estilo.css\" /><title>Errores Lexicos</title></head><body><h1><font face=\"Calibri\">Tabla de Lexemas por token</font></h1>";
+		String miTabla = "<table id=\"miTabla\"><tr><td>No.</td><td>Lexema</td><td>Token</td><td>Posicion</td></tr>";
+		String cierrePagina = "</table></body></html>";
+		String contenidoFila = "<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>";
+		//FORMATO PARA FILAS:<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>
+		String PaginaCompleta = Titulo + miTabla + contenidoFila + cierrePagina;
+		
+		try{
+			File errores = new File("errores lexicos.html");
+			FileWriter escritor = new FileWriter(errores);
+			BufferedWriter BW = new BufferedWriter(escritor);
+			PrintWriter salida = new PrintWriter(BW);
+			
+			salida.write(PaginaCompleta);
+			
+			salida.close();
+			BW.close();
+			
+			Desktop des = Desktop.getDesktop();
+			if(errores.exists()){
+				des.open(errores);
+			}
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null,"Error al guardar", "Notificacion", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 }

@@ -1,0 +1,22 @@
+@charset "utf-8";
+/* CSS Document */
+
+body, html {
+margin: 0;
+padding: 10px;
+background: #ccc;
+text-align: center;
+font-family: arial; }
+
+table {
+margin: auto;
+width: 590px;
+text-align: left;
+background: white;
+border: 1px solid silver;
+}
+
+tr:nth-child(2n+1) {
+background-color:gray;
+color:white
+}

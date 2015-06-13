@@ -422,6 +422,7 @@ public class Ventana extends JFrame implements ActionListener {
 					+ "\nCarnet: 2012-12961"
 					+ "\nCurso: Lenguajes Formales y de Programacion"
 					+ "\nVacaciones de Junio 2015","Acerda de..",JOptionPane.INFORMATION_MESSAGE);
+			ar.GenerarHTMLLexemas();
 		}
 		
 		if(e.getSource() == btnGuardar){
