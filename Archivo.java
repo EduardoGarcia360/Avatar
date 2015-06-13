@@ -107,12 +107,23 @@ public class Archivo {
         }
 	}
 	
-	public void GenerarHTMLLexemas(){
+	public void GenerarHTMLLexemas(String datos){
 		String Titulo = "<html><head><link rel=\"stylesheet\" type= \"text/css\" href=\"Estilo.css\" /><title>Tabla de Lexemas</title></head><body><h1><font face=\"Calibri\">Tabla de Lexemas por token</font></h1>";
 		String miTabla = "<table id=\"miTabla\"><tr><td>No.</td><td>Lexema</td><td>Token</td><td>Posicion</td></tr>";
 		String cierrePagina = "</table></body></html>";
-		String contenidoFila = "<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>";
+		String contenidoFila = "";
 		//FORMATO PARA FILAS:<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>
+		String datosv2 = datos.substring(0, datos.length()-1);
+		String [] LexemasenCodigo = datosv2.split("%");
+		
+		int PosFinal = LexemasenCodigo.length;
+			
+			for(int i=0; i<PosFinal; i++){
+				contenidoFila = contenidoFila + "<tr><td>"+LexemasenCodigo[i]+"</td><td>"+LexemasenCodigo[i+1]+"</td><td>"+LexemasenCodigo[i+2]+"</td><td>"+LexemasenCodigo[i+3]+"</td></tr>";
+				i = i + 3;
+			}
+			
+		
 		String PaginaCompleta = Titulo + miTabla + contenidoFila + cierrePagina;
 		
 		try{
@@ -135,12 +146,15 @@ public class Archivo {
 		}
 	}
 	
-	public void GenerarHTMLErrores(){
+	public void GenerarHTMLErrores(String datos){
 		String Titulo = "<html><head><link rel=\"stylesheet\" type= \"text/css\" href=\"Estilo.css\" /><title>Errores Lexicos</title></head><body><h1><font face=\"Calibri\">Tabla de Lexemas por token</font></h1>";
 		String miTabla = "<table id=\"miTabla\"><tr><td>No.</td><td>Lexema</td><td>Token</td><td>Posicion</td></tr>";
 		String cierrePagina = "</table></body></html>";
 		String contenidoFila = "<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>";
 		//FORMATO PARA FILAS:<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>
+		
+		String [] ErroresenCodigo = datos.split("%");
+		
 		String PaginaCompleta = Titulo + miTabla + contenidoFila + cierrePagina;
 		
 		try{

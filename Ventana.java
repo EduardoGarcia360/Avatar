@@ -187,14 +187,23 @@ public class Ventana extends JFrame implements ActionListener {
 					union = union + a;
 				}
 			}//DIVIDE CADA TOKEN CON "%"
+			//System.out.println(union);
 			Analizar(union);
 	}
 	
 	void Analizar(String Codigo){
+		String ErroresdeCodigo = "", LexemasdeCodigo="";
+		int ContadordeErrores = 0, ContadordeLexemas=0;
+		boolean ErrorEncontrado = false;
 		String [] TokenAnalizar = Codigo.split("%");
 		int Pf = TokenAnalizar.length;
 		if( !TokenAnalizar[0].equals("<avatar>") && !TokenAnalizar[Pf-1].equals("</avatar>")){
 			JOptionPane.showMessageDialog(null, "Faltan las etiquetas principales.","Error",JOptionPane.ERROR_MESSAGE);
+			ContadordeErrores++;
+			ErroresdeCodigo = ErroresdeCodigo + ContadordeErrores + "%" + TokenAnalizar[0] + "%" + "desconocido" + "%" + "Fila 1 columna "+0+"%"+"error lexico";
+			ContadordeErrores++;
+			ErroresdeCodigo = ErroresdeCodigo + ContadordeErrores + "%" + TokenAnalizar[Pf-1] + "%" + "desconocido" + "%" + "Fila 1 columna "+(Pf-1)+"%"+"error lexico";
+			ErrorEncontrado = true;
 		}else{
 			
 			
@@ -203,7 +212,11 @@ public class Ventana extends JFrame implements ActionListener {
 				String TokenActual = TokenAnalizar[i];
 				if( EtiquetaAbre(TokenActual)==false && EtiquetaCierre(TokenActual)==false && PalabraReservada(TokenActual,"")==false ){
 					JOptionPane.showMessageDialog(null, "error en: "+TokenActual);
-					break;
+					i = i +2;
+					ContadordeErrores++;
+					ErroresdeCodigo = ErroresdeCodigo + ContadordeErrores + "%" + TokenActual + "%" + "desconocido" + "%" + "Fila 1 columna "+i+"%"+"error lexico";
+					
+					//break;
 					
 				}else{
 					
@@ -211,8 +224,8 @@ public class Ventana extends JFrame implements ActionListener {
 						
 						char [] nombre = TokenAnalizar[i+1].toCharArray();
 						int f = nombre.length;
+						String nom="";
 						if(nombre[0] == 34 && nombre[f-1] == 34){
-							String nom="";
 							for(int n=1; n<nombre.length-2; n++){
 								nom = nom + Character.toString(nombre[n]);
 							}
@@ -220,31 +233,38 @@ public class Ventana extends JFrame implements ActionListener {
 							
 						}else{
 							JOptionPane.showMessageDialog(null, "Los nombres de usuario van entre comillas.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}
 						
 						if(EtiquetaCierre(TokenAnalizar[i+2]) == false){
 							String no = TokenAnalizar[i+2];
 							lblImagen.setText("");
 							JOptionPane.showMessageDialog(null, no + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}else{
+							ContadordeLexemas++;
+							ErrorEncontrado = false;
+							LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+ nom+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
 							lblImagen.setText(nombreUsuario);
 							i = i +2;
 						}
 						
 					}else if(TokenActual.equals("<edad>")){
-						
+						String edad="";
 						if( esnumero(TokenAnalizar[i+1]) == false){
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No es una edad.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}else{
+							edad = TokenAnalizar[i+1];
 							nombreUsuario = nombreUsuario + " Edad: " + TokenAnalizar[i+1];
 						}
 						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}else{
+							ContadordeLexemas++;
+							ErrorEncontrado = false;
+							LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+edad+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
 							lblImagen.setText(nombreUsuario);
 							i = i + 2;
 						}
@@ -253,28 +273,35 @@ public class Ventana extends JFrame implements ActionListener {
 						
 						if( PalabraReservada(TokenAnalizar[i+1], "complexion")== false){
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas de esta etiqueta.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}else{
 							//ALGO
 						}
 						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}else{
-							//ALGO
+							ContadordeLexemas++;
+							ErrorEncontrado = false;
+							LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+1]+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
 							i = i + 2;
 						}
 						
 					}else if(TokenActual.equals("<personalidad>")){
 						
 						if( PalabraReservada(TokenAnalizar[i+1], "personalidad")== false){
+							lblImagen.setBackground(null);
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas de esta etiqueta.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}
 						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
+							lblImagen.setBackground(null);
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}else{
+							ContadordeLexemas++;
+							ErrorEncontrado = false;
+							LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+1]+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
 							Correcto(TokenAnalizar[i+1],"personalidad");
 							i = i + 2;
 						}
@@ -282,13 +309,18 @@ public class Ventana extends JFrame implements ActionListener {
 					}else if(TokenActual.equals("<sexo>")){
 						
 						if( PalabraReservada(TokenAnalizar[i+1], "sexo")== false){
+							lblImagen.setForeground(null);
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+1] + " No forma parte de las palabras reservadas de esta etiqueta.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}
 						if( EtiquetaCierre(TokenAnalizar[i+2]) == false){
+							lblImagen.setForeground(null);
 							JOptionPane.showMessageDialog(null, TokenAnalizar[i+2] + " No es una etiqueta de cierre.","Error",JOptionPane.ERROR_MESSAGE);
-							break;
+							//break;
 						}else{
+							ContadordeLexemas++;
+							ErrorEncontrado = false;
+							LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+1]+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
 							Correcto(TokenAnalizar[i+1],"sexo");
 							i = i + 2;
 						}
@@ -298,6 +330,13 @@ public class Ventana extends JFrame implements ActionListener {
 				}
 			}
 			
+		}
+		
+		if( ErrorEncontrado == true){
+			ar.GenerarHTMLErrores(ErroresdeCodigo);
+		}else
+		if( ErrorEncontrado == false ){
+			ar.GenerarHTMLLexemas(LexemasdeCodigo);
 		}
 	
 	}
@@ -422,7 +461,6 @@ public class Ventana extends JFrame implements ActionListener {
 					+ "\nCarnet: 2012-12961"
 					+ "\nCurso: Lenguajes Formales y de Programacion"
 					+ "\nVacaciones de Junio 2015","Acerda de..",JOptionPane.INFORMATION_MESSAGE);
-			ar.GenerarHTMLLexemas();
 		}
 		
 		if(e.getSource() == btnGuardar){
