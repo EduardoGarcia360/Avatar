@@ -15,9 +15,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Archivo {
 	
-	boolean ArchivoAbierto = false;
-	File ArchivoSeleccionado;
-	
 	public String AbrirARCHIVO(String ruta){
 		File archivo = new File(ruta);
 		String temp="", retorno="";
@@ -113,13 +110,41 @@ public class Archivo {
 		String cierrePagina = "</table></body></html>";
 		String contenidoFila = "";
 		//FORMATO PARA FILAS:<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>
+		//FORMATO PARA COLOR: <font color="red">Este texto está en rojo</font>
 		String datosv2 = datos.substring(0, datos.length()-1);
 		String [] LexemasenCodigo = datosv2.split("%");
 		
 		int PosFinal = LexemasenCodigo.length;
 			
 			for(int i=0; i<PosFinal; i++){
-				contenidoFila = contenidoFila + "<tr><td>"+LexemasenCodigo[i]+"</td><td>"+LexemasenCodigo[i+1]+"</td><td>"+LexemasenCodigo[i+2]+"</td><td>"+LexemasenCodigo[i+3]+"</td></tr>";
+				String Lexema="";
+				if(LexemasenCodigo[i+1].equals("enojado")){
+					Lexema = "<font color=\"red\">"+LexemasenCodigo[i+1]+"</font>";
+				}else
+					if(LexemasenCodigo[i+1].equals("alegre")){
+						Lexema = "<font color=\"yellow\">"+LexemasenCodigo[i+1]+"</font>";
+					}else
+						if(LexemasenCodigo[i+1].equals("neutro")){
+							Lexema = "<font color=\"gray\">"+LexemasenCodigo[i+1]+"</font>";
+						}else
+							if(LexemasenCodigo[i+1].equals("masculino")){
+								Lexema = "<font color=\"blue\">"+LexemasenCodigo[i+1]+"</font>";
+							}else
+								if(LexemasenCodigo[i+1].equals("femenino")){
+									Lexema = "<font color=\"pink\">"+LexemasenCodigo[i+1]+"</font>";
+								}else
+									if(LexemasenCodigo[i+1].equals("delgado")){
+										Lexema = "<font color=\"purple\">"+LexemasenCodigo[i+1]+"</font>";
+									}else
+										if(LexemasenCodigo[i+1].equals("normal")){
+											Lexema = "<font color=\"aqua\">"+LexemasenCodigo[i+1]+"</font>";
+										}else
+											if(LexemasenCodigo[i+1].equals("gordo")){
+												Lexema = "<font color=\"maroon\">"+LexemasenCodigo[i+1]+"</font>";
+											}else{
+												Lexema = LexemasenCodigo[i+1];
+											}
+				contenidoFila = contenidoFila + "<tr><td>"+LexemasenCodigo[i]+"</td><td>"+Lexema+"</td><td>"+LexemasenCodigo[i+2]+"</td><td>"+LexemasenCodigo[i+3]+"</td></tr>";
 				i = i + 3;
 			}
 			
