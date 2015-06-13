@@ -172,13 +172,19 @@ public class Archivo {
 	}
 	
 	public void GenerarHTMLErrores(String datos){
-		String Titulo = "<html><head><link rel=\"stylesheet\" type= \"text/css\" href=\"Estilo.css\" /><title>Errores Lexicos</title></head><body><h1><font face=\"Calibri\">Tabla de Lexemas por token</font></h1>";
-		String miTabla = "<table id=\"miTabla\"><tr><td>No.</td><td>Lexema</td><td>Token</td><td>Posicion</td></tr>";
+		String Titulo = "<html><head><link rel=\"stylesheet\" type= \"text/css\" href=\"Estilo.css\" /><title>Errores Lexicos</title></head><body><h1><font face=\"Calibri\">Tabla de Errores Lexicos</font></h1>";
+		String miTabla = "<table id=\"miTabla\"><tr><td>No.</td><td>Lexema</td><td>Token</td><td>Posicion</td><td>Error</td></tr>";
 		String cierrePagina = "</table></body></html>";
-		String contenidoFila = "<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>";
-		//FORMATO PARA FILAS:<tr><td>1</td><td>enojado</td><td>3</td><td>Fila 1 columna 8</td></tr>
+		String contenidoFila = "";
+		//FORMATO PARA FILAS:<tr><td>1</td><td>%</td><td>desconocido</td><td>Fila 1 columna 8</td><td>error</td></tr>
 		
-		String [] ErroresenCodigo = datos.split("%");
+		String datosv2 = datos.substring(0, datos.length()-1);
+		String [] ErroresenCodigo = datosv2.split("%");
+		int PosFinal = ErroresenCodigo.length;
+		for(int i=0; i<PosFinal; i++){
+			contenidoFila = contenidoFila + "<tr><td>"+ErroresenCodigo[i]+"</td><td>"+ErroresenCodigo[i+1]+"</td><td>"+ErroresenCodigo[i+2]+"</td><td>"+ErroresenCodigo[i+3]+"</td><td>"+ErroresenCodigo[i+4]+"</td></tr>";
+			i = i + 4;
+		}
 		
 		String PaginaCompleta = Titulo + miTabla + contenidoFila + cierrePagina;
 		
