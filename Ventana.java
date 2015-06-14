@@ -1,9 +1,11 @@
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.StringTokenizer;
 
 import javax.swing.JFileChooser;
@@ -12,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -27,7 +30,7 @@ public class Ventana extends JFrame implements ActionListener {
 	Archivo ar = new Archivo();
 	JButton btnAbrir, btnGuardar, btnGuardarc, btnAnalizar, btnLimpiar;
 	JTextArea textArea;
-	JMenuItem mntmInformacion;
+	JMenuItem mntmInformacion, mntmManualu, mntmManualt;
 	JLabel lblImagen;
 	int contador=0;
 	public String RutadeArchivo="";
@@ -56,7 +59,7 @@ public class Ventana extends JFrame implements ActionListener {
 	 */
 	public Ventana() {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 440);
+		setBounds(100, 100, 959, 440);
 		this.setLocationRelativeTo(null);
 		this.setTitle("Practica 1");
 		cerrar();
@@ -75,7 +78,7 @@ public class Ventana extends JFrame implements ActionListener {
 		contentPane.add(textArea);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 969, 21);
+		menuBar.setBounds(0, 0, 1001, 21);
 		contentPane.add(menuBar);
 		
 		JMenu mnAcercaDe = new JMenu("Acerca de..");
@@ -84,18 +87,21 @@ public class Ventana extends JFrame implements ActionListener {
 		mntmInformacion = new JMenuItem("Informacion");
 		mntmInformacion.addActionListener(this);
 		
-		JMenuItem mntmManualt = new JMenuItem("ManualT");
+		mntmManualt = new JMenuItem("Manual Tecnico");
+		mntmManualt.addActionListener(this);
 		mnAcercaDe.add(mntmManualt);
 		
-		JMenuItem mntmManualu = new JMenuItem("ManualU");
+		mntmManualu = new JMenuItem("Manual Usuario");
+		mntmManualu.addActionListener(this);
 		mnAcercaDe.add(mntmManualu);
 		mnAcercaDe.add(mntmInformacion);
 		
 		//centrar texto en label ("pomez, 18", JLabel.LEFT)
 		lblImagen = new JLabel();
+		lblImagen.setBorder(BorderFactory.createLineBorder(Color.black));
 		lblImagen.setOpaque(true);
 		lblImagen.setVisible(true);
-		lblImagen.setBounds(580, 32, 273, 255);
+		lblImagen.setBounds(580, 32, 347, 255);
 		contentPane.add(lblImagen);
 		
 		btnGuardar = new JButton("Guardar");
@@ -212,7 +218,7 @@ public class Ventana extends JFrame implements ActionListener {
 						int f = nombre.length;
 						String nom="";
 						if(nombre[0] == 34 && nombre[f-1] == 34){
-							for(int n=1; n<nombre.length-2; n++){
+							for(int n=1; n<nombre.length-1; n++){
 								nom = nom + Character.toString(nombre[n]);
 							}
 							nombreUsuario = nombreUsuario + " Nombre: " + nom;
@@ -475,6 +481,18 @@ public class Ventana extends JFrame implements ActionListener {
 					+ "\nVacaciones de Junio 2015","Acerda de..",JOptionPane.INFORMATION_MESSAGE);
 		}
 		
+		if(e.getSource() == mntmManualu){
+			try{
+				File musuario = new File("ManualUsuario.pdf");
+				Desktop des = Desktop.getDesktop();
+				if(musuario.exists()){
+					des.open(musuario);
+				}
+			}catch(Exception ex){
+				JOptionPane.showMessageDialog(null, "Error en abrir","Advertencia",JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+		
 		if(e.getSource() == btnGuardar){
 			if(textArea.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "Aun no has ingresado ninguna linea de codigo","Advertencia",JOptionPane.INFORMATION_MESSAGE);
@@ -497,6 +515,9 @@ public class Ventana extends JFrame implements ActionListener {
 		if(e.getSource() == btnLimpiar){
 			textArea.setText("");
 			lblImagen.setText("");
+			lblImagen.setBackground(null);
+			lblImagen.setForeground(null);
+			lblImagen.setBorder(BorderFactory.createLineBorder(Color.black));
 			lblImagen.setIcon(null);
 			lblImagen.setBorder(null);
 			textArea.setEditable(true);
