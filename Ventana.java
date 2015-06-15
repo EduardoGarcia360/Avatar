@@ -55,10 +55,9 @@ public class Ventana extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Create the frame.
+	 * Agregado todo lo visual: botones, label, textarea, etc.
 	 */
 	public Ventana() {
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 959, 440);
 		this.setLocationRelativeTo(null);
 		this.setTitle("Practica 1");
@@ -96,7 +95,6 @@ public class Ventana extends JFrame implements ActionListener {
 		mnAcercaDe.add(mntmManualu);
 		mnAcercaDe.add(mntmInformacion);
 		
-		//centrar texto en label ("pomez, 18", JLabel.LEFT)
 		lblImagen = new JLabel();
 		lblImagen.setBorder(BorderFactory.createLineBorder(Color.black));
 		lblImagen.setOpaque(true);
@@ -126,12 +124,15 @@ public class Ventana extends JFrame implements ActionListener {
 		contentPane.add(btnLimpiar);
 	}
 	
+	/**
+	 * Metodo para preguntarle al usuario si quiere salir o no.
+	 */
 	public void cerrar(){
 		try{
 			this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			addWindowListener(new WindowAdapter(){
 				public void windowClosing(WindowEvent e){
-					Salida();
+					PreguntarSalida();
 				}
 			});
 		}catch(Exception e){
@@ -139,14 +140,23 @@ public class Ventana extends JFrame implements ActionListener {
 		}
 	}
 	
-	public void Salida(){
+	/**
+	 * Metodo que muestra en pantalla las opciones para salir.
+	 */
+	public void PreguntarSalida(){
 		int respuesta = JOptionPane.showConfirmDialog(this, "¿Quiere salir?", "Mensaje",JOptionPane.YES_NO_OPTION);
 		if(respuesta == JOptionPane.YES_OPTION){
 			System.exit(0);
 		}
 	}
 	
-	void Unir(){
+	/**
+	 * La funcion es que va a retornar el texto ingresado en el area para introducir el codigo en una sola linea
+	 * de esta forma no importa si el usuario ingresa el codigo en una sola linea, ejecutara el codigo igual.
+	 * la forma de salida del codigo estaria dividida por el simbolo '%' siendo el siguiente un ejemplo de la salida:
+	 * <etiqueta>%palabra/texto%<etiqueta>%palabra/texto%<etiqueta>
+	 */
+	private void Unir(){
 		String Codigo = textArea.getText();
 
 			StringTokenizer TokensCodigo = new StringTokenizer(Codigo,"\n");
@@ -182,11 +192,21 @@ public class Ventana extends JFrame implements ActionListener {
 					union = union + a;
 				}
 			}//DIVIDE CADA TOKEN CON "%"
-			//System.out.println(union);
 			Analizar(union);
 	}
 	
-	void Analizar(String Codigo){
+	/**
+	 * La funcion es que analiza el codigo previamente unido en una linea con el metodo 'Unir'
+	 * verifica primeramente que existan la etiquetas de 'avatar' en el codigo de lo contrario no funcionara
+	 * seguidamente verifica si existen las etiquetas respectivas de las palabras reservadas, si estuvieran mal
+	 * escritas se ignorara la linea y pasara a la siguiente por el contrario si la etiqueta de abrir esta correcta
+	 * lo siguiente en verificar seria la etiqueta de cerrado si es incorrecta se ignorara la linea, pero si es correcta
+	 * se pasara a revisar el contenido dentro de las etiquetas ver si pertenece a la palabras reservadas o si
+	 * existen los sibolos necesarios para el cumplimiento de las mismas, cuando encuentre un error o este todo o algunas etiquetas
+	 * correctas se generara un archivo en el cual estaran especificados los errores y las palabras correctas.
+	 * @param Codigo recibe el codigo unido en una linea
+	 */
+	private void Analizar(String Codigo){
 		String ErroresdeCodigo = "", LexemasdeCodigo="";
 		int ContadordeErrores = 0, ContadordeLexemas=0;
 		boolean ErrorEncontrado = true, Error = false;
@@ -358,6 +378,11 @@ public class Ventana extends JFrame implements ActionListener {
 	
 	}
 	
+	/**
+	 * booleano que verificara la existencia de las etiquetas para abrir.
+	 * @param Dato recibe la etiqueta
+	 * @return retornara 'true' si la etiqueta existe de no existir retornara 'false'
+	 */
 	boolean EtiquetaAbre(String Dato){
 		String [] PalabrasReservadas = {"<avatar>","<usuario>","<complexion>","<personalidad>","<sexo>","<edad>"};
 		boolean correcto = false;
@@ -369,6 +394,12 @@ public class Ventana extends JFrame implements ActionListener {
 		return correcto;
 	}
 	
+	/**
+	 * 
+	 * @param Dato
+	 * @param Etiqueta
+	 * @return
+	 */
 	boolean PalabraReservada(String Dato, String Etiqueta){
 		boolean correcto = false;
 		if(Etiqueta.equals("")){
@@ -410,7 +441,7 @@ public class Ventana extends JFrame implements ActionListener {
 		return correcto;
 	}
 	
-	public static boolean esnumero(String dato){
+	boolean esnumero(String dato){
         try{
             Integer.parseInt(dato);
         }catch(NumberFormatException nfe){
@@ -483,10 +514,22 @@ public class Ventana extends JFrame implements ActionListener {
 		
 		if(e.getSource() == mntmManualu){
 			try{
-				File musuario = new File("ManualUsuario.pdf");
+				File musuario = new File("Usuario.pdf");
 				Desktop des = Desktop.getDesktop();
 				if(musuario.exists()){
 					des.open(musuario);
+				}
+			}catch(Exception ex){
+				JOptionPane.showMessageDialog(null, "Error en abrir","Advertencia",JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+		
+		if(e.getSource() == mntmManualt){
+			try{
+				File mtecnico = new File("Tecnico.pdf");
+				Desktop des = Desktop.getDesktop();
+				if(mtecnico.exists()){
+					des.open(mtecnico);
 				}
 			}catch(Exception ex){
 				JOptionPane.showMessageDialog(null, "Error en abrir","Advertencia",JOptionPane.INFORMATION_MESSAGE);
