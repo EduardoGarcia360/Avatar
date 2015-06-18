@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -115,36 +116,24 @@ public class Archivo {
 		String [] LexemasenCodigo = datosv2.split("%");
 		
 		int PosFinal = LexemasenCodigo.length;
-			
+			String Lexema="";
 			for(int i=0; i<PosFinal; i++){
-				String Lexema="";
-				if(LexemasenCodigo[i+1].equals("enojado")){
-					Lexema = "<font color=\"red\">"+LexemasenCodigo[i+1]+"</font>";
-				}else
-					if(LexemasenCodigo[i+1].equals("alegre")){
-						Lexema = "<font color=\"yellow\">"+LexemasenCodigo[i+1]+"</font>";
-					}else
-						if(LexemasenCodigo[i+1].equals("neutro")){
-							Lexema = "<font color=\"gray\">"+LexemasenCodigo[i+1]+"</font>";
-						}else
-							if(LexemasenCodigo[i+1].equals("masculino")){
-								Lexema = "<font color=\"blue\">"+LexemasenCodigo[i+1]+"</font>";
-							}else
-								if(LexemasenCodigo[i+1].equals("femenino")){
-									Lexema = "<font color=\"pink\">"+LexemasenCodigo[i+1]+"</font>";
-								}else
-									if(LexemasenCodigo[i+1].equals("delgado")){
-										Lexema = "<font color=\"purple\">"+LexemasenCodigo[i+1]+"</font>";
-									}else
-										if(LexemasenCodigo[i+1].equals("normal")){
-											Lexema = "<font color=\"aqua\">"+LexemasenCodigo[i+1]+"</font>";
-										}else
-											if(LexemasenCodigo[i+1].equals("gordo")){
-												Lexema = "<font color=\"maroon\">"+LexemasenCodigo[i+1]+"</font>";
-											}else{
-												Lexema = LexemasenCodigo[i+1];
-											}
-				contenidoFila = contenidoFila + "<tr><td>"+LexemasenCodigo[i]+"</td><td>"+Lexema+"</td><td>"+LexemasenCodigo[i+2]+"</td><td>"+LexemasenCodigo[i+3]+"</td></tr>";
+				Lexema = LexemasenCodigo[i+1];
+				
+				String temp="";
+				for (int k = 0; k < Lexema.length(); k++) {
+                    if (Lexema.charAt(k) == '<') {
+                    	temp += "&#60;";
+                    } else if (	Lexema.charAt(k) == '>') {
+                    	temp += "&#62;";
+                    } else {
+                    	temp += Lexema.charAt(k);
+                    }
+
+					
+				}
+				
+				contenidoFila = contenidoFila + "<tr><td>"+LexemasenCodigo[i]+"</td><td>"+temp+"</td><td>"+LexemasenCodigo[i+2]+"</td><td>"+LexemasenCodigo[i+3]+"</td></tr>";
 				i = i + 3;
 			}
 			

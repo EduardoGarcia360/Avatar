@@ -253,7 +253,11 @@ public class Ventana extends JFrame implements ActionListener {
 							}else{
 								ContadordeLexemas++;
 								ErrorEncontrado = false;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i]+"%"+(i)+"%"+"Fila 1 Columna "+(i)+"%";
+								ContadordeLexemas++;
 								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+ nom+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
+								ContadordeLexemas++;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+2]+"%"+(i+2)+"%"+"Fila 1 Columna "+(i+2)+"%";
 								lblImagen.setText(nombreUsuario);
 								i = i +2;
 							}
@@ -282,9 +286,13 @@ public class Ventana extends JFrame implements ActionListener {
 								Error = true;
 								i = i + 2;
 							}else{
-								ContadordeLexemas++;
 								ErrorEncontrado = false;
+								ContadordeLexemas++;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i]+"%"+(i)+"%"+"Fila 1 Columna "+(i)+"%";
+								ContadordeLexemas++;
 								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+edad+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
+								ContadordeLexemas++;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+2]+"%"+(i+2)+"%"+"Fila 1 Columna "+(i+2)+"%";
 								lblImagen.setText(nombreUsuario);
 								i = i + 2;
 							}
@@ -307,7 +315,11 @@ public class Ventana extends JFrame implements ActionListener {
 							}else{
 								ContadordeLexemas++;
 								ErrorEncontrado = false;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i]+"%"+(i)+"%"+"Fila 1 Columna "+(i)+"%";
+								ContadordeLexemas++;
 								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+1]+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
+								ContadordeLexemas++;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+2]+"%"+(i+2)+"%"+"Fila 1 Columna "+(i+2)+"%";
 								i = i + 2;
 							}
 						}
@@ -331,7 +343,11 @@ public class Ventana extends JFrame implements ActionListener {
 							}else{
 								ContadordeLexemas++;
 								ErrorEncontrado = false;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i]+"%"+(i)+"%"+"Fila 1 Columna "+(i)+"%";
+								ContadordeLexemas++;
 								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+1]+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
+								ContadordeLexemas++;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+2]+"%"+(i+2)+"%"+"Fila 1 Columna "+(i+2)+"%";
 								Correcto(TokenAnalizar[i+1],"personalidad");
 								i = i + 2;
 							}
@@ -356,7 +372,11 @@ public class Ventana extends JFrame implements ActionListener {
 							}else{
 								ContadordeLexemas++;
 								ErrorEncontrado = false;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i]+"%"+(i)+"%"+"Fila 1 Columna "+(i)+"%";
+								ContadordeLexemas++;
 								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+1]+"%"+(i+1)+"%"+"Fila 1 Columna "+(i+1)+"%";
+								ContadordeLexemas++;
+								LexemasdeCodigo = LexemasdeCodigo+ContadordeLexemas +"%"+TokenAnalizar[i+2]+"%"+(i+2)+"%"+"Fila 1 Columna "+(i+2)+"%";
 								Correcto(TokenAnalizar[i+1],"sexo");
 								i = i + 2;
 							}
@@ -368,7 +388,6 @@ public class Ventana extends JFrame implements ActionListener {
 			}
 			
 		}
-		
 		if( Error == true){
 			ar.GenerarHTMLErrores(ErroresdeCodigo);
 		}
@@ -560,7 +579,7 @@ public class Ventana extends JFrame implements ActionListener {
 			lblImagen.setText("");
 			lblImagen.setBackground(null);
 			lblImagen.setForeground(null);
-			lblImagen.setBorder(BorderFactory.createLineBorder(Color.black));
+			lblImagen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			lblImagen.setIcon(null);
 			lblImagen.setBorder(null);
 			textArea.setEditable(true);
